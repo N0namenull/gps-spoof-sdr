@@ -15,7 +15,7 @@ A scientific project that allows you to spoofe GPS coordinates using SDR
 2. Install dependencies to launch main.py (The easiest way is through pycharm)
 3. Connect Hackrf to pc
 4. Launch main.py
-5. Open http://127.0.0.1:8000
+5. Open http://127.0.0.1:5000
 6. You are great!
 
 
