@@ -16,7 +16,7 @@ def calculate_distance_and_azimuth(lat1, lon1, lat2, lon2):
     return result['s12'], result['azi1']
 
 
-def calculate_intermediate_points(lat1, lon1, lat2, lon2, speed_kmh, interval=1):
+def calculate_intermediate_points(lat1, lon1, lat2, lon2, speed_kmh, interval=0.1):
     line = geo_tool.InverseLine(lat1, lon1, lat2, lon2)
     total_distance = line.s13
     speed = speed_kmh / 3.6  # Convert speed from km/h to m/s
@@ -37,7 +37,7 @@ def write_coordinates_to_csv(coords, speed_kmh=180, interval=1):
     with open(csv_file, "w") as file:
         for idx, coord in enumerate(coords):
             time = idx * interval
-            file.write(f"{time:.1f}, {coord['lat']:.6f}, {coord['lng']:.6f}, 0.000\n")
+            file.write(f"{time:.1f}, {coord['lat']:.6f}, {coord['lng']:.6f}, 100.000\n")
 
 
 @app.route('/', methods=['GET'])
@@ -79,7 +79,7 @@ def send_simulation():
         if not os.path.exists(csv_file):
             return jsonify({'error': 'CSV файл с координатами не найден.'}), 400
         print('Trying to send data to gps-sdr-sim...')
-        command = f"{gps_sdr_sim_path} -e brdc1470.24n -b 8 -u {csv_file}"
+        command = f"{gps_sdr_sim_path} -e brdc1470.24n -b 8 -x {csv_file}"
         print(f"Executing command: {command}")
         if not os.path.exists(gps_sdr_sim_path):
             print(f"Ошибка: файл {gps_sdr_sim_path} не найден.")
